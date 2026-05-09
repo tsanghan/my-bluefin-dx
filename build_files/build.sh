@@ -11,8 +11,7 @@ set -ouex pipefail
 
 # this installs a package from fedora repos
 dnf5 install -y tmux thinkfan && \
-systemctl enable --now thinkfan && \
-ln -s /var/home /home
+systemctl enable --now thinkfan
 
 # Use a COPR Example:
 #
