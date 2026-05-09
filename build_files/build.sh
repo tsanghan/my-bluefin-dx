@@ -10,17 +10,20 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a package from fedora repos
-dnf5 install -y tmux thinkfan
+dnf5 install -y tmux thinkfan nfs-utils
 echo "options thinkpad_acpi fan_control=1" | sudo tee /etc/modprobe.d/thinkfan.conf
 echo 'install_items+=" /etc/modprobe.d/thinkfan.conf "' | sudo tee /etc/dracut.conf.d/thinkfan.conf
-# dracut --force --no-hostonly /boot/initramfs-*.img
-# ostree container commit
-systemctl enable --now thinkfan
 
 KERNEL_SUFFIX=""
-QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
+QUALIFIED_KERNEL="$(rpm -qa | \
+    grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | \
+    sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
+
 export DRACUT_NO_XATTR=1
-/usr/bin/dracut --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
+/usr/bin/dracut --no-hostonly \
+                --kver "$QUALIFIED_KERNEL" \
+                --reproducible -v \
+                --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
 # Use a COPR Example:
@@ -32,4 +35,5 @@ chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
 #### Example for enabling a System Unit File
 
+systemctl enable thinkfan
 systemctl enable podman.socket
