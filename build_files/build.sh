@@ -10,9 +10,10 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a package from fedora repos
-dnf5 install -y tmux thinkfan nfs-utils
-echo "options thinkpad_acpi fan_control=1" | sudo tee /etc/modprobe.d/thinkfan.conf
-echo 'install_items+=" /etc/modprobe.d/thinkfan.conf "' | sudo tee /etc/dracut.conf.d/thinkfan.conf
+dnf5 install -y thinkfan
+echo "options thinkpad_acpi fan_control=1" | tee /etc/modprobe.d/thinkfan.conf
+echo 'install_items+="/etc/modprobe.d/thinkfan.conf"' | tee /etc/dracut.conf.d/install_items.conf
+echo 'add_dracutmodules+="nfs"' | tee /etc/racut.conf.d/add_modules.conf
 
 KERNEL_SUFFIX=""
 QUALIFIED_KERNEL="$(rpm -qa | \
