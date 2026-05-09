@@ -10,9 +10,10 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # this installs a package from fedora repos
-dnf5 install -y tmux thinkfan dracut && \
-echo 'install_items+=" /etc/modprobe.d/thinkfan.conf "' | tee /etc/dracut.conf.d/thinkfan.conf && \
-dracut --regenerate-all --force
+dnf5 install -y tmux thinkfan && \
+echo "options thinkpad_acpi fan_control=1" | sudo tee /etc/modprobe.d/thinkfan.conf
+echo 'force_drivers+=" /etc/modprobe.d/thinkfan.conf "' | tee /etc/dracut.conf.d/thinkfan.conf && \
+dracut --regenerate-all --force --logfile /tmp/dracut.log
 systemctl enable --now thinkfan
 
 # Use a COPR Example:
