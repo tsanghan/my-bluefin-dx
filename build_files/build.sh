@@ -13,7 +13,6 @@ set -ouex pipefail
 dnf5 install -y thinkfan
 echo "options thinkpad_acpi fan_control=1" | tee /etc/modprobe.d/thinkfan.conf
 echo 'install_items+="/etc/modprobe.d/thinkfan.conf"' | tee /etc/dracut.conf.d/install_items.conf
-echo 'add_dracutmodules+="nfs"' | tee /etc/racut.conf.d/add_modules.conf
 
 KERNEL_SUFFIX=""
 QUALIFIED_KERNEL="$(rpm -qa | \
