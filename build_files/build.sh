@@ -11,6 +11,8 @@ set -ouex pipefail
 
 # this installs a package from fedora repos
 dnf5 install -y tmux thinkfan && \
+echo "options thinkpad_acpi fan_control=1" | sudo tee /etc/modprobe.d/thinkfan.conf && \
+initramfs --enable --arg="-I" --arg="/etc/modprobe.d/thinkfan.conf" && \
 systemctl enable --now thinkfan
 
 # Use a COPR Example:
