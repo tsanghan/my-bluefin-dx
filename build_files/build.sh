@@ -12,7 +12,7 @@ set -ouex pipefail
 # this installs a package from fedora repos
 dnf5 install -y tmux thinkfan
 echo "options thinkpad_acpi fan_control=1" | sudo tee /etc/modprobe.d/thinkfan.conf
-echo 'force_drivers+=" /etc/modprobe.d/thinkfan.conf "' | tee /etc/dracut.conf.d/thinkfan.conf
+echo 'install_items+=" /etc/modprobe.d/thinkfan.conf "' | sudo tee /etc/dracut.conf.d/thinkfan.conf
 # dracut --force --no-hostonly /boot/initramfs-*.img
 # ostree container commit
 systemctl enable --now thinkfan
