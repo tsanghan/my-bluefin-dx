@@ -25,6 +25,8 @@ export DRACUT_NO_XATTR=1
                 --reproducible -v \
                 --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
+mkdir /var/nix
+ln -s /var/nix /nix
 
 # Use a COPR Example:
 #
