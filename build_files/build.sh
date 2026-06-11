@@ -12,7 +12,7 @@ set -ouex pipefail
 # this installs a package from fedora repos
 dnf5 install -y thinkfan
 echo "options thinkpad_acpi fan_control=1" | tee /etc/modprobe.d/thinkfan.conf
-echo 'install_items+="/etc/modprobe.d/thinkfan.conf"' | tee /etc/dracut.conf.d/install_items.conf
+echo 'install_items+=" /etc/modprobe.d/thinkfan.conf "' | tee /etc/dracut.conf.d/install_items.conf
 
 KERNEL_SUFFIX=""
 QUALIFIED_KERNEL="$(rpm -qa | \
